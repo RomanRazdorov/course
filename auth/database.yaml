@@ -1,0 +1,5 @@
+username: postgres
+password: postgres
+host: db_auth
+port: 6101
+databaseName: postgres
