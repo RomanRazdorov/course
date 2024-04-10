@@ -50,16 +50,13 @@ class AppPostController extends ResourceController {
   ) async {
     try {
       final currentAuthorId = AppUtils.getIdFromHeader(header);
-      final qGetPosts = Query<Post>(managedContext)
+      final qGetPost = Query<Post>(managedContext)
         ..where((x) => x.id).equalTo(id)
         ..where((x) => x.author?.id).equalTo(currentAuthorId)
         ..returningProperties((x) => [x.content, x.id, x.name]);
-      final post = await qGetPosts.fetchOne();
+      final post = await qGetPost.fetchOne();
       if (post == null) {
         return AppResponse.ok(message: "Unknown Post");
-      }
-      if (post.author?.id != currentAuthorId) {
-        return AppResponse.ok(message: "Post does not belong to current user");
       }
       return AppResponse.ok(
           body: post.backing.contents, message: "Post get successful");
